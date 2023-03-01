@@ -17,7 +17,6 @@
 package io.confluent.kafka.schemaregistry.client.security.bearerauth;
 
 import io.confluent.kafka.schemaregistry.client.SchemaRegistryClientConfig;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,28 +26,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class BearerAuthCredentialProviderFactoryTest {
-  private Map<String, String> CONFIG_MAP = new HashMap<>();
+    private final Map<String, String> CONFIG_MAP = new HashMap<>();
 
-  @Before
-  public void setup() throws IOException {
-    CONFIG_MAP.put(SchemaRegistryClientConfig.BEARER_AUTH_TOKEN_CONFIG, "auth-token");
-  }
+    @Before
+    public void setup() throws IOException {
+        CONFIG_MAP.put(SchemaRegistryClientConfig.BEARER_AUTH_TOKEN_CONFIG, "auth-token");
+    }
 
-  @Test
-  public void testSuccess() {
-    assertInstance(BearerAuthCredentialProviderFactory.getBearerAuthCredentialProvider(
-            "STATIC_TOKEN", CONFIG_MAP), StaticTokenCredentialProvider.class);
-  }
+    @Test
+    public void testSuccess() {
+        assertInstance(BearerAuthCredentialProviderFactory.getBearerAuthCredentialProvider("STATIC_TOKEN", CONFIG_MAP),
+                        StaticTokenCredentialProvider.class);
+    }
 
-  @Test
-  public void testUnknownProvider() {
-    Assert.assertNull(BearerAuthCredentialProviderFactory.getBearerAuthCredentialProvider(
-            "UNKNOWN", CONFIG_MAP));
-  }
+    @Test
+    public void testUnknownProvider() {
+        Assert.assertNull(BearerAuthCredentialProviderFactory.getBearerAuthCredentialProvider("UNKNOWN", CONFIG_MAP));
+    }
 
-  public void assertInstance(BearerAuthCredentialProvider instance,
-                             Class<? extends BearerAuthCredentialProvider> klass) {
-    Assert.assertNotNull(instance);
-    Assert.assertEquals(klass, instance.getClass());
-  }
+    @Test
+    public void testOkta() {
+        CONFIG_MAP.put(SchemaRegistryClientConfig.BEARER_AUTH_CREDENTIALS_SOURCE, "OKTA");
+        CONFIG_MAP.put("oauth_client_id", "okta_client_id");
+        CONFIG_MAP.put("oauth.access.token", "okta_client_secret");
+        CONFIG_MAP.put("oauth.token.endpoint.uri", "https:okta.someplace.com/oauth2/someapp/v1/token");
+        CONFIG_MAP.put("oauth.provider.class", "io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler");
+        BearerAuthCredentialProvider provider = BearerAuthCredentialProviderFactory.getBearerAuthCredentialProvider(
+                        "OKTA",
+                        CONFIG_MAP);
+        Assert.assertNotNull(provider);
+    }
+
+    public void assertInstance(BearerAuthCredentialProvider instance,
+                    Class<? extends BearerAuthCredentialProvider> klass) {
+        Assert.assertNotNull(instance);
+        Assert.assertEquals(klass, instance.getClass());
+    }
 }

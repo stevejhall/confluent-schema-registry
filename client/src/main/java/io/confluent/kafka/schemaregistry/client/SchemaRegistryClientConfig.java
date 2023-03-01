@@ -31,6 +31,8 @@ public class SchemaRegistryClientConfig {
   public static final String BEARER_AUTH_CREDENTIALS_SOURCE = "bearer.auth.credentials.source";
   public static final String BEARER_AUTH_TOKEN_CONFIG = "bearer.auth.token";
 
+  public static final String BEARER_AUTH_PROVIDER_CLASS = "oauth.provider.class";
+
   public static final String PROXY_HOST = "proxy.host";
   public static final String PROXY_PORT = "proxy.port";
 
