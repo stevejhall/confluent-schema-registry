@@ -16,8 +16,7 @@
 
 package io.confluent.kafka.schemaregistry.client.security.bearerauth;
 
-import io.confluent.kafka.schemaregistry.client.SchemaRegistryClientConfig;
-import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
+import io.strimzi.kafka.oauth.client.JaasClientOauthLoginCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 
 import javax.security.auth.login.AppConfigurationEntry;
@@ -27,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 public class OktaTokenCredentialProvider implements BearerAuthCredentialProvider {
-  private AuthenticateCallbackHandler handler;
+  private JaasClientOauthLoginCallbackHandler handler;
 
   @Override
   public String alias() {
@@ -44,14 +43,19 @@ public class OktaTokenCredentialProvider implements BearerAuthCredentialProvider
       callbacks[0] = callback;
       handler.handle(callbacks);
     } catch (Exception e) {
-      throw new RuntimeException("Error ", e);
+      throw new RuntimeException(
+          String.format("Error getting OKTA bearer token for URL:  %s", url.toString()), e
+      );
+
     }
 
     if (null == callback.errorCode()) {
       return callback.token().value();
     } else {
       throw new RuntimeException(
-          String.format("Error fetching OKTA token error code: %s error description: %s ",
+          String.format(
+          "Error fetching OKTA token for URL: %s, error code: %s, error description: %s ",
+          url.toString(),
           callback.errorCode(),
           callback.errorDescription()));
     }
@@ -59,14 +63,8 @@ public class OktaTokenCredentialProvider implements BearerAuthCredentialProvider
 
   @Override
   public void configure(Map<String, ?> configs) {
-    String providerClass =
-            (String) configs.get(SchemaRegistryClientConfig.BEARER_AUTH_PROVIDER_CLASS);
     try {
-      Class<AuthenticateCallbackHandler> clazz =
-            (Class<AuthenticateCallbackHandler>) this.getClass()
-            .getClassLoader()
-            .loadClass(providerClass);
-      handler = clazz.newInstance();
+      handler = new JaasClientOauthLoginCallbackHandler();
       List<AppConfigurationEntry> jaasConfigEntries = new ArrayList<>();
       jaasConfigEntries.add(
                       new AppConfigurationEntry("JaasClientOauthLoginCallbackHandler",
@@ -75,8 +73,8 @@ public class OktaTokenCredentialProvider implements BearerAuthCredentialProvider
       handler.configure(configs, "OAUTHBEARER", jaasConfigEntries);
     } catch (Exception e) {
       throw new RuntimeException(
-                      String.format("Unable to load and configure OAUTH provider class: %s",
-                        providerClass), e);
+          String.format("Unable to load and configure OAUTH provider class: %s",
+          JaasClientOauthLoginCallbackHandler.class.getName()), e);
     }
   }
 }

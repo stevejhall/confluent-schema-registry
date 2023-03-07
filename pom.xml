@@ -81,9 +81,9 @@
         <protobuf.version>3.19.4</protobuf.version>
         <protoc.jar.maven.plugin.version>3.11.4</protoc.jar.maven.plugin.version>
         <wire.version>3.6.0</wire.version>
-        <swagger.version>1.6.2</swagger.version>
+        <swagger.version>1.6.6</swagger.version>
         <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
-        <io.confluent.schema-registry.version>6.1.8</io.confluent.schema-registry.version>
+        <io.confluent.schema-registry.version>6.1.8-nike</io.confluent.schema-registry.version>
         <commons.compress.version>1.21</commons.compress.version>
         <snake.yaml.version>1.27</snake.yaml.version>
     </properties>
@@ -214,100 +214,6 @@
                 <artifactId>snakeyaml</artifactId>
                 <version>${snake.yaml.version}</version>
             </dependency>
-
-            <!--children-->
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-avro-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-json-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-connect-avro-data</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-connect-avro-converter</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-schema-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-schema-registry-client</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-schema-registry</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-schema-registry</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-                <type>test-jar</type>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-streams-avro-serde</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-connect-protobuf-converter</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-protobuf-provider</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-protobuf-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-protobuf-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-                <type>test-jar</type>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-streams-protobuf-serde</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-connect-json-schema-converter</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-json-schema-provider</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-json-schema-serializer</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>io.confluent</groupId>
-                <artifactId>kafka-streams-json-schema-serde</artifactId>
-                <version>${io.confluent.schema-registry.version}</version>
-            </dependency>
             <dependency>
                 <groupId>jakarta.ws.rs</groupId>
                 <artifactId>jakarta.ws.rs-api</artifactId>
@@ -417,6 +323,5 @@
                 </executions>
             </plugin>
         </plugins>
-
     </build>
 </project>
